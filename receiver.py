@@ -53,9 +53,9 @@ def decode_chunk_method_ex3(chunk, a, energy):
     print("Index of the largest component : ", max_index)
     # Since we have ordered the codewords in the codebook, we can directly return the index of the decided codeword
     if chunk[max_index] > 0:
-        return max_index
+        return 2* max_index
     else:
-        return max_index + 1
+        return 2* max_index +1
 
 
 def decode_signal(chunks, a, energy, sigma, tau):
