@@ -64,6 +64,7 @@ if __name__ == '__main__':
                           'Design a more efficient communication system.'))
 
     energy = np.sum(np.square(np.abs(tx_p_signal)))
+    print(f'Energy of the signal: {energy:.2f}')
     if energy > 40960:
         raise ValueError(('Energy of the signal exceeds the limit 40960. '
                           'Design a more efficient communication system.'))

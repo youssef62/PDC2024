@@ -44,8 +44,9 @@ def generate_codebook(l,energy=40960):
     """
     codebook = {}
     n = 2**(l-1) # we have 2**l possible codewords, but in the notation of ex.3 we say we have 2n codewords
-    for i in range(2*n): # iterate over the 2n codewords
-        codebook[i] = np.sqrt(energy) * np.array([1 if j == i else 0 for j in range(2*n)])
+    for i in range(n): # generate the 2n codewords
+        codebook[i] = np.sqrt(energy) * np.array([1 if j == i else 0 for j in range(n)])
+        codebook[i+n] = -codebook[i]
     # for each line in the codebook, save the corresponding codeword in a line of the .txt file
     np.savetxt("codebook_for_chunks.txt", list(codebook.values()), fmt='%d')
 
@@ -67,10 +68,13 @@ def create_signal(chunked_string, output_file):
     np.savetxt(output_file, signal, fmt='%d')
 
 if __name__ == '__main__':
-    input_string_40_chars = "Hello, this is a test string with 40 characters."
+    input_string_40_chars = "abcdefghijklmnopqrstuvwxyz12341234567890"
+    print("length of input string : ", len(input_string_40_chars))
     l = 4
-    energy = 40960
+    energy = 3000
     generate_codebook(l, energy)
     chunked_string = chunk_string(input_string_40_chars, l)
+    print("We are sending this many chunks : ", len(chunked_string))
+    print("Chunked string : ", chunked_string)
     create_signal(chunked_string, "signal.txt")
     print("Encoded string saved in signal.txt")
