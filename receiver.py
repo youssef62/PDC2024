@@ -1,9 +1,7 @@
 """
     This module takes the received file, applies the decoding scheme and outputs the decoded string.
-    Now, either the first or the second half of the received vector is pure noise. To decide which, we will
-    apply the technique from ex. 4. However, instead of computing the argmin for each codeword, we will
-    use the decoding scheme from ex.3 on each half of the received vector
-
+    Now, since we had to "spread" the codewords in the signal, we need to "gather" the components of each codeword
+    and re-create the chunks. Because of the channel, half the chunks will be pure noise.
     Version: 1.0, yuri
 """
 import numpy as np

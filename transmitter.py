@@ -23,8 +23,9 @@ def chunk_string(input_string, l):
     """
     # Step 1, encoding each character in the string as a 6 bit binary number
     binary_string = ""
+    alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ."
     for char in input_string:
-        binary_string += format(ord(char), '06b')
+        binary_string += format(alphabet.index(char), '06b')
     # Step 2, splitting the binary string into l-bit chunks
     chunks = [binary_string[i:i+l] for i in range(0, len(binary_string), l)]
     # Step 3, converting each chunk into a decimal number (we will generate the codebook later)
@@ -51,8 +52,8 @@ def generate_codebook(l,energy=40960):
 def create_signal(chunked_string, output_file):
     """
     This function creates the signal that will be sent to the server. It takes the chunks that contains the
-    indices of the corresponding codewords and the codebook. It generates the signal by putting each codeword in
-    a different line of the .txt file.
+    indices of the corresponding codewords and the codebook. It generates the signal by putting each component of each
+    codeword in a different line of the .txt file.
     :param chunked_string: the string containing the indices of the codewords
     :param output_file: the path to the .txt file that will contain the signal
     """
@@ -61,6 +62,8 @@ def create_signal(chunked_string, output_file):
     signal = []
     for index in chunked_string:
         signal.append(codebook[index])
+    # we need to "spread" the codewords in the signal, so that each component of each codeword is in a different line
+    signal = np.array(signal).flatten()
     np.savetxt(output_file, signal, fmt='%d')
 
 if __name__ == '__main__':
