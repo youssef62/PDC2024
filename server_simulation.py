@@ -7,8 +7,10 @@ def channel(x):
     Z = np.random.normal(0, np.sqrt(sigma_sq), (2*n))
     X = np.zeros(2*n)
     if B == 1:
+        print("Signal first")
         X[0:n] = x
     else:
+        print("Noise first")
         X[n:2*n] = x
     Y=X+Z
     Y = np.reshape(Y, (-1))

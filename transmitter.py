@@ -26,6 +26,7 @@ def chunk_string(input_string, l):
     alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ."
     for char in input_string:
         binary_string += format(alphabet.index(char), '06b')
+    print("Binary string : ", binary_string)
     # Step 2, splitting the binary string into l-bit chunks
     chunks = [binary_string[i:i+l] for i in range(0, len(binary_string), l)]
     # Step 3, converting each chunk into a decimal number (we will generate the codebook later)
@@ -34,7 +35,7 @@ def chunk_string(input_string, l):
         chunked_string.append(int(chunk, 2))
     return chunked_string
 
-def generate_codebook(l,energy=40960):
+def generate_codebook(l,energy):
     """
     This function generates the codebook for each chunk according to the encoding scheme of ex. 3.
     :param l: the number of bits in each chunk
@@ -68,10 +69,10 @@ def create_signal(chunked_string, output_file):
     np.savetxt(output_file, signal, fmt='%d')
 
 if __name__ == '__main__':
-    input_string_40_chars = "abcdefghijklmnopqrstuvwxyz12341234567890"
+    input_string_40_chars = "salut comment ca va je vais bien merciii"
     print("length of input string : ", len(input_string_40_chars))
     l = 4
-    energy = 3000
+    energy = 300000
     generate_codebook(l, energy)
     chunked_string = chunk_string(input_string_40_chars, l)
     print("We are sending this many chunks : ", len(chunked_string))
