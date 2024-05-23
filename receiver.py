@@ -97,6 +97,7 @@ def receiver(l, a, energy, rcvd_signal_txt):
     chunks = gather_signal(l, rcvd_signal_txt)
     decoded_obs = decode_signal(chunks, a, energy)
     decoded_string = recreate_string(decoded_obs, l)
-    print("Decoded string : ", decoded_string)
+    return decoded_string 
+    
 
 
