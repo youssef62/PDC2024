@@ -67,7 +67,7 @@ def create_signal(chunked_string, output_file):
     signal = np.array(signal).flatten()
     np.savetxt(output_file, signal, fmt='%d')
 
-def transmitter(input_string_40_chars, l, energy, output_file):
+def transmitter(input_string_40_chars, l, energy, output_file, verbose=False):
     """
     This function is a wrapper for the functions that generate the signal that will be sent to the server.
     :param input_string: the string to encode
@@ -75,11 +75,14 @@ def transmitter(input_string_40_chars, l, energy, output_file):
     :param energy: the energy of the codewords
     :param output_file: the path to the .txt file that will contain the signal
     """
-    print("input string : ", input_string_40_chars)
-    print("length of input string (chars) : ", len(input_string_40_chars))
+    if verbose:
+        print("input string : ", input_string_40_chars)
+        print("length of input string (chars) : ", len(input_string_40_chars))
     generate_codebook(l, energy)
     chunked_string = chunk_string(input_string_40_chars, l)
-    print("We are sending 240/l = ", len(chunked_string), " chunks")
+    if verbose: 
+        print("We are sending 240/l = ", len(chunked_string), " chunks")
     create_signal(chunked_string, output_file)
-    print("Encoded string saved in ", output_file)
+    if verbose: 
+        print("Encoded string saved in ", output_file)
 

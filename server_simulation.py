@@ -17,6 +17,8 @@ def channel(x):
 def server_simulation(input_path, output_path):
     # get signal.txt
     x = np.loadtxt(input_path)
-    print("the energy of the signal is #chunks * energy of codeword for a observation: ", np.sum(np.square(np.abs(x))))
+    #print("the energy of the signal is #chunks * energy of codeword for a observation: ", np.sum(np.square(np.abs(x))))
+    E = np.sum(np.square(np.abs(x))) 
+    assert E < 40960, "The energy of the signal is too high" 
     y = channel(x)
     np.savetxt(output_path, y, fmt='%f')
