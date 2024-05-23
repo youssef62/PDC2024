@@ -4,7 +4,7 @@
     The chosen encoding scheme is the one from exercise 3 in the theory :
     1) we encode each character in the string as a 6 bit binary number, then we concatenate all the binary numbers.
     2) we split this long binary number into l-bit chunks, l is arbitrary (optimal l is to be computed analytically).
-    3) we convert each l-bit chunk into a decimal number, that will be the index of the codeword in the codebook for the chunks.
+    3) we convert each l-bit observation into a decimal number, that will be the index of the codeword in the codebook for the chunks.
     4) we save the decimal numbers in a .txt file.
     Note : the codebook is generated in the function generate_codebook.
     That way, we have generated a n/l dimension vector that can be sent to the server.
@@ -15,10 +15,10 @@ import numpy as np
 
 def chunk_string(input_string, l):
     """
-    This functions splits a string into chunks. Each chunk is then encoded as a decimal number which is the index of the
+    This functions splits a string into chunks. Each observation is then encoded as a decimal number which is the index of the
     codeword in the codebook.
     :param input_string: the string to encode
-    :param l: the number of bits in each chunk
+    :param l: the number of bits in each observation
     :return: the encoded string
     """
     # Step 1, encoding each character in the string as a 6 bit binary number
@@ -26,10 +26,9 @@ def chunk_string(input_string, l):
     alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ."
     for char in input_string:
         binary_string += format(alphabet.index(char), '06b')
-    print("Binary string : ", binary_string)
     # Step 2, splitting the binary string into l-bit chunks
     chunks = [binary_string[i:i+l] for i in range(0, len(binary_string), l)]
-    # Step 3, converting each chunk into a decimal number (we will generate the codebook later)
+    # Step 3, converting each observation into a decimal number (we will generate the codebook later)
     chunked_string = []
     for chunk in chunks:
         chunked_string.append(int(chunk, 2))
@@ -37,8 +36,8 @@ def chunk_string(input_string, l):
 
 def generate_codebook(l,energy):
     """
-    This function generates the codebook for each chunk according to the encoding scheme of ex. 3.
-    :param l: the number of bits in each chunk
+    This function generates the codebook for each observation according to the encoding scheme of ex. 3.
+    :param l: the number of bits in each observation
     :param energy: the energy of the codewords, default is max Energy = 40960.
     Consider a communication system with 2n equally likely codewords ± sqrt(Energy) * ej,
     j = 1, . . . , n where e1, . . . , en are the unit coordinate vectors in Rn
@@ -68,14 +67,19 @@ def create_signal(chunked_string, output_file):
     signal = np.array(signal).flatten()
     np.savetxt(output_file, signal, fmt='%d')
 
-if __name__ == '__main__':
-    input_string_40_chars = "salut comment ca va je vais bien merciii"
-    print("length of input string : ", len(input_string_40_chars))
-    l = 4
-    energy = 300000
+def transmitter(input_string_40_chars, l, energy, output_file):
+    """
+    This function is a wrapper for the functions that generate the signal that will be sent to the server.
+    :param input_string: the string to encode
+    :param l: the number of bits in each observation
+    :param energy: the energy of the codewords
+    :param output_file: the path to the .txt file that will contain the signal
+    """
+    print("input string : ", input_string_40_chars)
+    print("length of input string (chars) : ", len(input_string_40_chars))
     generate_codebook(l, energy)
     chunked_string = chunk_string(input_string_40_chars, l)
-    print("We are sending this many chunks : ", len(chunked_string))
-    print("Chunked string : ", chunked_string)
-    create_signal(chunked_string, "signal.txt")
-    print("Encoded string saved in signal.txt")
+    print("We are sending 240/l = ", len(chunked_string), " chunks")
+    create_signal(chunked_string, output_file)
+    print("Encoded string saved in ", output_file)
+
