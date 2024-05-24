@@ -16,7 +16,7 @@ def send_locally(input_string_40_chars,Verbose=True):
     :return: the decoded string
     """
     l = 12 # number of bits in each observation
-    energy = 2000 # energy of the codewords for each observation
+    energy = 2110 # energy of the codewords for each observation
     output_file = "local/transmitted_signal.txt"
     transmitter.transmitter(input_string_40_chars, l, energy, output_file, verbose=Verbose)
 
@@ -63,7 +63,7 @@ def send_over_client(input_string_40_chars,Verbose=True):
     :return: the decoded string 
     """ 
     l = 12 # number of bits in each observation 
-    energy = 2000 # energy of the codewords for each observation 
+    energy = 2110 # energy of the codewords for each observation 
     output_file = "client/transmitted_signal.txt"
     transmitter.transmitter(input_string_40_chars, l, energy, output_file, verbose=Verbose)
 
@@ -83,8 +83,8 @@ if __name__ == '__main__':
     # input_string_40_chars = "saluttoutlemonde40charscestlaviehuhuhu12"
     # send_locally(input_string_40_chars)
    
-    #print("Estimated error probabilty: ", estimate_error_prob()) 
+    print("Estimated error probabilty: ", estimate_error_prob(1000)) 
     
-    input_string_40_chars = "saluttoutlemonde40charscestlaviehuhuhu12" 
-    send_over_client(input_string_40_chars)
+    # input_string_40_chars = "saluttoutlemonde40charscestlaviehuhuhu12" 
+    # send_over_client(input_string_40_chars)
     
