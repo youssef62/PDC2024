@@ -48,6 +48,7 @@ def generate_codebook(l,energy):
         codebook[i] = np.sqrt(energy) * np.array([1 if j == i else 0 for j in range(n)])
         codebook[i+n] = -codebook[i]
     # for each line in the codebook, save the corresponding codeword in a line of the .txt file
+    
     np.savetxt("codebook_for_chunks.txt", list(codebook.values()), fmt='%d')
 
 def create_signal(chunked_string, output_file):

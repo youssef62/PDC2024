@@ -5,7 +5,7 @@ import client
 import random
 import string 
 import os 
-
+import argparse 
 
 def send_locally(input_string_40_chars,Verbose=True): 
     """
@@ -80,11 +80,24 @@ def send_over_client(input_string_40_chars,Verbose=True):
              
            
 if __name__ == '__main__':
-    # input_string_40_chars = "saluttoutlemonde40charscestlaviehuhuhu12"
-    # send_locally(input_string_40_chars)
-   
-    print("Estimated error probabilty: ", estimate_error_prob(1000)) 
     
-    # input_string_40_chars = "saluttoutlemonde40charscestlaviehuhuhu12" 
-    # send_over_client(input_string_40_chars)
+    # command line argument, first one is the mode 
+    parser = argparse.ArgumentParser(description='Full design of the communication system')
+    parser.add_argument('--mode', type=str, help='local or client or error_prob')
+    parser.add_argument('--input_string', type=str, help='the input string to send') 
+    
+    args = parser.parse_args()
+    
+    input_string_40_chars = args.input_string 
+    if args.input_string is None and args.mode != "error_prob": 
+        input_string_40_chars = "saluttoutlemonde40charscestlaviehuhuhu12"
+    
+    
+    if args.mode == "local":
+        send_locally(input_string_40_chars) 
+    elif args.mode == "client": 
+        send_over_client(input_string_40_chars)
+    elif args.mode == "error_prob":
+        print("Estimated error probabilty: ", estimate_error_prob(100))
+
     
