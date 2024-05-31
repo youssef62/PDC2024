@@ -15,9 +15,19 @@ Link to pdf file: [Project description](project-desc.pdf)
 5. Receive the signal and decode it block by block using the method described in exercise 3.
 
 ## Choice of constants
-- Choosing `k`: Let us first notice that the size of transmitted message is given by: `len(message)` $= n = 2^{k-1} \cdot \frac{240}{k}$. Therefore, knowing that $n \leq 500000$ and $k>0$ and we find:
+- Choosing $k$: Let us first notice that the size of transmitted message is given by: `len(message)` $= n = 2^{k-1} \cdot \frac{240}{k}$. Therefore, knowing that $n \leq 500000$ and $k>0$ and we find:
 $$2^{k-1} \cdot \frac{240}{k} \leq 500000 \iff \frac{2^{k-1}}{k} \leq \frac{6250}{3}$$
-By numerically testing values, we find that the biggest `k` that satisfies the above inequality is k = 16. Therefore, we must choose $0 < k \leq 16$.
+By numerically testing values, we find that the biggest `k` that satisfies the above inequality is `k = 16`. Therefore, we must choose $0 < k \leq 16$.
+We choose $k = 12$ since it respects the bounds and empirically doesn't take too much time to compute. 
+
+- Choosing $\mathcal{E}$:
+$$||x||^2 < 40960 \iff \frac{240}{k} \mathcal{E} < 40960 \iff \mathcal{E} < 2048$$
+We chose $\mathcal{E} = 2025$.
+
+- We have the following upper bound for a single chunk: $$p_e < \exp(-\frac{1}{8}(1-\frac{2\ln(2)}{A})^2Ak)$$.
+Therefore, by the union bound, we have the following upper bound for the whole message: $$\mathbb{P}_e \leq \frac{240}{k}\exp(-\frac{1}{8}(1-\frac{2\ln(2)}{A})^2Ak)$$.
+Plugging in our chosen values for $k$ and $\mathcal{E}$, we find $\mathbb{P}_e \leq 0.04$
+
 
 ## How to run the code 
 You need to run the file `full_design,py` in order to run the code. 
