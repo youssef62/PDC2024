@@ -12,6 +12,7 @@
 """
 
 import numpy as np
+import os 
 
 def chunk_string(input_string, l):
     """
@@ -49,6 +50,7 @@ def generate_codebook(l,energy):
         codebook[i+n] = -codebook[i]
     # for each line in the codebook, save the corresponding codeword in a line of the .txt file
     
+    
     np.savetxt("codebook_for_chunks.txt", list(codebook.values()), fmt='%d')
 
 def create_signal(chunked_string, output_file):
@@ -66,6 +68,8 @@ def create_signal(chunked_string, output_file):
         signal.append(codebook[index])
     # we need to "spread" the codewords in the signal, so that each component of each codeword is in a different line
     signal = np.array(signal).flatten()
+    
+    os.makedirs(os.path.dirname(output_file), exist_ok=True) 
     np.savetxt(output_file, signal, fmt='%d')
 
 def transmitter(input_string_40_chars, l, energy, output_file, verbose=False):
