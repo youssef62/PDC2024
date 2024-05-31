@@ -8,12 +8,14 @@
 Link to pdf file: [Project description](project-desc.pdf)
 
 ## System design 
-1. Split the message into blocks of 12 bits. 
+1. Split the message into blocks of `k` bits. 
 2. Encode each block with the method described in exercise 3. 
 3. Concatenate the encoded blocks to form the transmitted signal. 
 4. Send the signal through a channel.
 5. Receive the signal and decode it block by block using the method described in exercise 3.
 
+## Choice of constants
+- Choosing `k`: Let us first notice that the size of transmitted message is given by: `len(message)` $= n = 2^{k-1} \cdot \frac{240}{k}$. Therefore, knowing that $n \leq 500000 $, we find that `k`$\leq 15$.
 
 ## How to run the code 
 You need to run the file `full_design,py` in order to run the code. 
@@ -33,6 +35,3 @@ Examples :
 * `transmitter.py` : receives a message, encodes as described and outputs it to a file "client/transmitted_signal.txt" ("local/transmitted_signal.txt" in client mode). This file is then passed to the channel. 
 * `receiver.py` : receives the signal from the channel, decodes it and outputs the decoded message to a file "client/received_message.txt" ("local/received_message.txt" in client mode).
 * `full_design.py` : main file that describes the full communication system i.e runs the transmitter, channel and receiver.
-
-
-
