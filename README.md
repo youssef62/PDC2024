@@ -29,7 +29,6 @@ Examples :
 2. `python full_design.py --mode client --input_string "1234567890123456789012345678901234567890"`
 3. `python full_design.py --mode error_prob`
 
-**Note**: Make sure `client/transmitted_signal.txt` and `client/rcvd_signal.txt` exist before running the code in "client" mode. 
 ## Code structure 
 * `transmitter.py` : receives a message, encodes as described and outputs it to a file "client/transmitted_signal.txt" ("local/transmitted_signal.txt" in client mode). This file is then passed to the channel. 
 * `receiver.py` : receives the signal from the channel, decodes it and outputs the decoded message to a file "client/received_message.txt" ("local/received_message.txt" in client mode).
