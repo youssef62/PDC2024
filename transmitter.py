@@ -12,7 +12,8 @@
 """
 
 import numpy as np
-import os 
+import os
+
 
 def chunk_string(input_string, l):
     """
@@ -28,14 +29,15 @@ def chunk_string(input_string, l):
     for char in input_string:
         binary_string += format(alphabet.index(char), '06b')
     # Step 2, splitting the binary string into l-bit chunks
-    chunks = [binary_string[i:i+l] for i in range(0, len(binary_string), l)]
+    chunks = [binary_string[i:i + l] for i in range(0, len(binary_string), l)]
     # Step 3, converting each observation into a decimal number (we will generate the codebook later)
     chunked_string = []
     for chunk in chunks:
         chunked_string.append(int(chunk, 2))
     return chunked_string
 
-def generate_codebook(l,energy):
+
+def generate_codebook(l, energy):
     """
     This function generates the codebook for each observation according to the encoding scheme of ex. 3.
     :param l: the number of bits in each observation
@@ -44,14 +46,14 @@ def generate_codebook(l,energy):
     j = 1, . . . , n where e1, . . . , en are the unit coordinate vectors in Rn
     """
     codebook = {}
-    n = 2**(l-1) # we have 2**l possible codewords, but in the notation of ex.3 we say we have 2n codewords
-    for i in range(n): # generate the 2n codewords
+    n = 2 ** (l - 1)  # we have 2**l possible codewords, but in the notation of ex.3 we say we have 2n codewords
+    for i in range(n):  # generate the 2n codewords
         codebook[i] = np.sqrt(energy) * np.array([1 if j == i else 0 for j in range(n)])
-        codebook[i+n] = -codebook[i]
+        codebook[i + n] = -codebook[i]
     # for each line in the codebook, save the corresponding codeword in a line of the .txt file
-    
-    
-    np.savetxt("codebook_for_chunks.txt", list(codebook.values()), fmt='%d')
+
+    np.savetxt("codebook_for_chunks.txt", list(codebook.values()), fmt='%f')
+
 
 def create_signal(chunked_string, output_file):
     """
@@ -68,9 +70,10 @@ def create_signal(chunked_string, output_file):
         signal.append(codebook[index])
     # we need to "spread" the codewords in the signal, so that each component of each codeword is in a different line
     signal = np.array(signal).flatten()
-    
-    os.makedirs(os.path.dirname(output_file), exist_ok=True) 
-    np.savetxt(output_file, signal, fmt='%d')
+
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
+    np.savetxt(output_file, signal, fmt='%f')
+
 
 def transmitter(input_string_40_chars, l, energy, output_file, verbose=False):
     """
@@ -85,9 +88,8 @@ def transmitter(input_string_40_chars, l, energy, output_file, verbose=False):
         print("length of input string (chars) : ", len(input_string_40_chars))
     generate_codebook(l, energy)
     chunked_string = chunk_string(input_string_40_chars, l)
-    if verbose: 
+    if verbose:
         print("We are sending 240/l = ", len(chunked_string), " chunks")
     create_signal(chunked_string, output_file)
-    if verbose: 
+    if verbose:
         print("Encoded string saved in ", output_file)
-

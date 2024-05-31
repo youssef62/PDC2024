@@ -63,7 +63,7 @@ def send_over_client(input_string_40_chars,Verbose=True):
     :return: the decoded string 
     """ 
     l = 12 # number of bits in each observation 
-    energy = 2110 # energy of the codewords for each observation 
+    energy = 2025 # energy of the codewords for each observation
     output_file = "client/transmitted_signal.txt"
     transmitter.transmitter(input_string_40_chars, l, energy, output_file, verbose=Verbose)
 
@@ -88,7 +88,7 @@ if __name__ == '__main__':
     
     args = parser.parse_args()
     
-    input_string_40_chars = args.input_string 
+    input_string_40_chars = args.input_string
     if args.input_string is None and args.mode != "error_prob": 
         input_string_40_chars = "saluttoutlemonde40charscestlaviehuhuhu12"
     
